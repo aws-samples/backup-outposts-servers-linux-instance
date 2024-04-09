@@ -9,7 +9,7 @@ This automation runbook creates an EBS-backed AMI in region storing the data of 
 - The EC2 instance to backup must be a SSM managed instance running on Outpost Server. The role attached to the instance must also provide the permissions to execute "ssm:GetParameter". You can use a role with the policy "AmazonSSMManagedInstanceCore" attached to provide all the necessary permissions to the EC2 instance running on Outposts Server
 - There must be a Subnet in Region in the same VPC of the Outposts Server Subnet to launch the Helper instance.
 - The outbound rules (SG/nACL/OS Firewall) applied to the instance running on Outposts Server must allow the SSH connectivity towards the private CIDR of the Subnet in Region outlined in the previous point.
-- aws cli, rsync (version >= 3.1.3) and sfdisk (version >= 2.26) installed on the instance running on Outposts Server
+- aws cli, rsync (version >= 3.1.2) and sfdisk (version >= 2.26) installed on the instance running on Outposts Server
 
 ## Limitations
 
