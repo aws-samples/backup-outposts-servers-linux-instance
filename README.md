@@ -31,11 +31,11 @@ $ cd backup-outposts-servers-linux-instance
 ```
 $ make documents
 ```
-4. Upload the Output/Attachments/attachment.zip file to an S3 Bucket of your choice. Substitute BUCKET_NAME with the name of your S3 Bucket:
+4. Upload the Output/Attachments/attachment.zip file to an S3 Bucket of your choice. Substitute **BUCKET_NAME** with the name of your S3 Bucket:
 ```
 $ aws s3 cp Output/Attachments/attachment.zip s3://BUCKET_NAME
 ```
-5. Create the SSM Automation Document with the attachment uploaded in the previous step. Substitute DOC_NAME with the name you want to give to this Automation, BUCKET_NAME with the name of the S3 Bucket where you uploaded the attachment.zip file and REGION_OF_OUTPOST_SERVER with the AWS Region where your Outpost Server resides:
+5. Create the SSM Automation Document with the attachment uploaded in the previous step. Substitute **DOC_NAME** with the name you want to give to this Automation, **BUCKET_NAME** with the name of the S3 Bucket where you uploaded the attachment.zip file and **REGION_OF_OUTPOST_SERVER** with the AWS Region where your Outpost Server resides:
 ```
 $ aws ssm create-document --content file://Output/BackupOutpostsServerLinuxInstanceToEBS.json --name "DOC_NAME" --document-type "Automation" --document-format JSON --attachments Key=S3FileUrl,Values=s3://BUCKET_NAME/attachment.zip,Name=attachment.zip --region REGION_OF_OUTPOST_SERVER
 ```
@@ -112,51 +112,51 @@ Automation
 
 The AutomationAssumeRole or IAM user, requires the following permissions to successfully run this automation.
 
-- **- ec2:DescribeImages**
-- **- ec2:DescribeSnapshots**
-- **- ec2:DescribeVolumes**
-- **- ec2:DescribeSubnets**
-- **- ec2:DescribeLaunchTemplates**
-- **- ec2:DescribeInstances**
-- **- ec2:DescribeInstanceStatus**
-- **- ec2:DescribeInstanceTypes**
-- **- ec2:DescribeSecurityGroupRules**
-- **- ec2:DescribeSecurityGroups**
-- **- ec2:DescribeKeyPairs**
-- **- ssm:DescribeInstanceInformation**
-- **- ssm:DescribeAutomationExecutions**
-- **- ssm:GetAutomationExecution**
-- **- ssm:ListCommandInvocations**
-- **- ssm:ListCommands**
-- **- ssm:GetParameters**
-- **- cloudformation:DescribeStacks**
-- **- cloudformation:DescribeStackResource**
-- **- cloudformation:DescribeStackEvents**
-- **- ec2:CreateSecurityGroup**
-- **- ec2:RevokeSecurityGroupEgress**
-- **- ec2:AuthorizeSecurityGroupIngress**
-- **- ec2:AuthorizeSecurityGroupEgress**
-- **- ec2:RunInstances**
-- **- ec2:TerminateInstances**
-- **- ec2:CreateVolume**
-- **- ec2:DeleteVolume**
-- **- ec2:ModifyVolume**
-- **- ec2:CreateKeyPair**
-- **- ec2:DeleteKeyPair**
-- **- ec2:CreateLaunchTemplate**
-- **- ec2:CreateTags**
-- **- ec2:AttachVolume**
-- **- ec2:StartInstances**
-- **- ec2:StopInstances**
-- **- ec2:CreateSnapshot**
-- **- ec2:RegisterImage**
-- **- ec2:DeleteSecurityGroup**
-- **- ec2:DeleteLaunchTemplate**
-- **- ssm:SendCommand**
-- **- ssm:PutParameter**
-- **- ssm:DeleteParameter**
-- **- cloudformation:CreateStack**
-- **- cloudformation:DeleteStack**
+- **ec2:DescribeImages**
+- **ec2:DescribeSnapshots**
+- **ec2:DescribeVolumes**
+- **ec2:DescribeSubnets**
+- **ec2:DescribeLaunchTemplates**
+- **ec2:DescribeInstances**
+- **ec2:DescribeInstanceStatus**
+- **ec2:DescribeInstanceTypes**
+- **ec2:DescribeSecurityGroupRules**
+- **ec2:DescribeSecurityGroups**
+- **ec2:DescribeKeyPairs**
+- **ssm:DescribeInstanceInformation**
+- **ssm:DescribeAutomationExecutions**
+- **ssm:GetAutomationExecution**
+- **ssm:ListCommandInvocations**
+- **ssm:ListCommands**
+- **ssm:GetParameters**
+- **cloudformation:DescribeStacks**
+- **cloudformation:DescribeStackResource**
+- **cloudformation:DescribeStackEvents**
+- **ec2:CreateSecurityGroup**
+- **ec2:RevokeSecurityGroupEgress**
+- **ec2:AuthorizeSecurityGroupIngress**
+- **ec2:AuthorizeSecurityGroupEgress**
+- **ec2:RunInstances**
+- **ec2:TerminateInstances**
+- **ec2:CreateVolume**
+- **ec2:DeleteVolume**
+- **ec2:ModifyVolume**
+- **ec2:CreateKeyPair**
+- **ec2:DeleteKeyPair**
+- **ec2:CreateLaunchTemplate**
+- **ec2:CreateTags**
+- **ec2:AttachVolume**
+- **ec2:StartInstances**
+- **ec2:StopInstances**
+- **ec2:CreateSnapshot**
+- **ec2:RegisterImage**
+- **ec2:DeleteSecurityGroup**
+- **ec2:DeleteLaunchTemplate**
+- **ssm:SendCommand**
+- **ssm:PutParameter**
+- **ssm:DeleteParameter**
+- **cloudformation:CreateStack**
+- **cloudformation:DeleteStack**
 
 
 ## Document Version
