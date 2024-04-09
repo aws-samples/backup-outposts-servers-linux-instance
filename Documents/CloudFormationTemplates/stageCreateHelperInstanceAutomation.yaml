@@ -1,0 +1,117 @@
+# Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+# SPDX-License-Identifier: MIT-0
+
+AWSTemplateFormatVersion: 2010-09-09
+Description: Creates a helper instance in the specified AZ or subnet
+Parameters:
+    Architecture:
+        Type: String
+        AllowedValues:
+        - arm64
+        - x86_64
+    OutpostsSubnetCIDR:
+        Description: Outposts Server Subnet CIDR.
+        Type: String
+    SubnetId:
+        Description: Subnet ID of the helper instance.
+        Type: String
+    VpcId:
+        Description: VPC ID of the helper instance and Outposts Server instance.
+        Type: String
+    KeyPairName:
+        Description: SSH KeyPair Name of the helper instance
+        Type: String
+    ExecutionId:
+        Description: Systems Manager Automation Execution ID.
+        Type: String
+        Default: ''
+    HelperInstanceLinuxAMI:
+        Description: Helper instance AMI ID.
+        Type: 'AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>'
+        Default: /aws/service/ami-amazon-linux-latest/al2023-ami-kernel-default-x86_64
+    HelperInstanceARMLinuxAMI:
+        Description: Helper instance AMI ID.
+        Type: 'AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>'
+        Default: /aws/service/ami-amazon-linux-latest/al2023-ami-kernel-default-arm64
+    HelperInstanceType:
+        Description: The EC2 instance type for the EC2 Helper instance.
+        Type: String
+    CreateHelperInstance:
+        Description: 'Confirm that you want to create the helper instance. Default: False'
+        Type: String
+        Default: 'False'
+        AllowedValues:
+        - 'True'
+        - 'False'
+Conditions:
+    ArchitectureIsARM: !Equals 
+        - !Ref Architecture
+        - arm64
+    CreateHelperInstance: !Equals 
+        - !Ref CreateHelperInstance
+        - 'True'
+Resources:
+    IsolatedSecurityGroup:
+        Type: AWS::EC2::SecurityGroup
+        Properties:
+            GroupDescription: Allow SSH connection from the Outposts Server subnet CIDR
+            VpcId: !Ref VpcId
+            SecurityGroupEgress:
+              - CidrIp: 127.0.0.1/32
+                IpProtocol: -1
+    HelperInstanceSecurityGroup:
+        Type: AWS::EC2::SecurityGroup
+        Properties:
+            GroupDescription: Allow SSH connection from the Outposts Server subnet CIDR
+            VpcId: !Ref VpcId
+            SecurityGroupIngress:
+              - IpProtocol: tcp
+                FromPort: 22
+                ToPort: 22
+                CidrIp: !Ref OutpostsSubnetCIDR
+    HelperInstanceKeyPair:
+        Type: 'AWS::EC2::KeyPair'
+        Properties:
+            KeyName: !Ref KeyPairName
+    HelperEc2InstanceLaunchTemplate:
+        Type: AWS::EC2::LaunchTemplate
+        Properties:
+            LaunchTemplateData:
+                MetadataOptions:
+                    HttpEndpoint: enabled
+                    HttpTokens: required
+    HelperInstance:
+        Condition: CreateHelperInstance
+        Type: 'AWS::EC2::Instance'
+        Properties:
+            ImageId: !If
+                    - ArchitectureIsARM
+                    - !Ref HelperInstanceARMLinuxAMI
+                    - !Ref HelperInstanceLinuxAMI
+            KeyName: !Ref HelperInstanceKeyPair
+            LaunchTemplate:
+                LaunchTemplateId: !Ref HelperEc2InstanceLaunchTemplate
+                Version: !GetAtt HelperEc2InstanceLaunchTemplate.LatestVersionNumber
+            InstanceType: !Ref HelperInstanceType
+            PropagateTagsToVolumeOnCreation: true
+            NetworkInterfaces:
+              - AssociatePublicIpAddress: true
+                DeleteOnTermination: true
+                DeviceIndex: '0'
+                SubnetId: !Ref SubnetId
+                GroupSet:
+                  - !Ref HelperInstanceSecurityGroup
+            UserData:
+                Fn::Base64: !Sub |
+                    #!/bin/bash
+                    grubby --update-kernel ALL --args selinux=0
+                    reboot
+Outputs:
+    HelperInstanceId:
+        Value: !Ref HelperInstance
+    HelperInstancePrivateIp:
+        Value: !GetAtt HelperInstance.PrivateIp
+    HelperInstanceKeyID:
+        Value: !GetAtt HelperInstanceKeyPair.KeyPairId
+    IsolatedSgId:
+        Value: !Ref IsolatedSecurityGroup
