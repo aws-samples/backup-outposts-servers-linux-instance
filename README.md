@@ -21,25 +21,24 @@ Executing this runbook, may incur extra charges to your account for the EC2 inst
 
 ## Installation Instructions
 
-1. Open the Cloudshell or a client with the AWS CLI and python3 installed that can access the Account of the Outposts Server where you want to run the Automation
+1. Open the Cloudshell or a client with the AWS CLI and python3 installed that can access the Account of the Outposts Server instance where you want to run the Automation
 2. Clone the source code hosted on GitHub and cd into it with the command:
 ```
-$ git clone https://github.com/aws-samples/backup-outposts-servers-linux-instance.git
-$ cd backup-outposts-servers-linux-instance
+git clone https://github.com/aws-samples/backup-outposts-servers-linux-instance.git
+cd backup-outposts-servers-linux-instance
 ```
 3. Build the SSM Automation document with its Attchments and README with the command:
 ```
-$ make documents
+make documents
 ```
-4. Upload the Output/Attachments/attachment.zip file to an S3 Bucket of your choice. Substitute **BUCKET_NAME** with the name of your S3 Bucket:
+4. Upload the Output/Attachments/attachment.zip file to an S3 Bucket of your choice and create the SSM Automation Document. **BUCKET_NAME** is the name of the S3 Bucket where you want to upload the attachments, **DOC_NAME** is the name you want to give to this Automation and **OUTPOST_REGION** is the AWS Region where your Outpost Server resides:
 ```
-$ aws s3 cp Output/Attachments/attachment.zip s3://BUCKET_NAME
+BUCKET_NAME="bucket-for-attachments"
+DOC_NAME="BackupOutpostsServerLinuxInstanceToEBS"
+OUTPOST_REGION="region-of-outpost"
+aws s3 cp Output/Attachments/attachment.zip s3://${BUCKET_NAME}
+aws ssm create-document --content file://Output/BackupOutpostsServerLinuxInstanceToEBS.json --name ${DOC_NAME} --document-type "Automation" --document-format JSON --attachments Key=S3FileUrl,Values=s3://${BUCKET_NAME}/attachment.zip,Name=attachment.zip --region ${OUTPOST_REGION}
 ```
-5. Create the SSM Automation Document with the attachment uploaded in the previous step. Substitute **DOC_NAME** with the name you want to give to this Automation, **BUCKET_NAME** with the name of the S3 Bucket where you uploaded the attachment.zip file and **REGION_OF_OUTPOST_SERVER** with the AWS Region where your Outpost Server resides:
-```
-$ aws ssm create-document --content file://Output/BackupOutpostsServerLinuxInstanceToEBS.json --name "DOC_NAME" --document-type "Automation" --document-format JSON --attachments Key=S3FileUrl,Values=s3://BUCKET_NAME/attachment.zip,Name=attachment.zip --region REGION_OF_OUTPOST_SERVER
-```
-
 ## Usage Instructions
 
 1. Open the AWS Console and go to Systems Manager > Documents > “Owned by me” in the region where you deployed the SSM Automation
