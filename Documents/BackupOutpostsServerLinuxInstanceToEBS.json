@@ -41,7 +41,7 @@
         },
         "UniqueId": {
             "type": "String",
-            "description": "(Optional) A unique identifier for the workflow.",
+            "description": "(Required) A unique identifier for the workflow.",
             "default": "{{ automation:EXECUTION_ID }}",
             "allowedPattern":"\\{\\{ automation:EXECUTION_ID \\}\\}|^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"
         },
