@@ -43,7 +43,7 @@ aws ssm create-document --content file://Output/BackupOutpostsServerLinuxInstanc
 
 1. Open the AWS Console and go to Systems Manager > Documents > “Owned by me” in the region where you deployed the SSM Automation
 1. Select the document name you specified when following the "Installation Instructions" and click on “Execute automation”
-1. Fill-in the input parameters and click on "Execute". Familiarize yourself with the document by reading through the parameters and steps description below.
+1. Fill-in the input parameters and click on "Execute". Familiarize yourself with the document by reading through the parameters and steps description.
 
 ## How to create your own version
 
