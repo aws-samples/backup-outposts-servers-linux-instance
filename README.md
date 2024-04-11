@@ -98,7 +98,7 @@ Automation
 ### UniqueId
 
 - **Type**: String
-- **Description**: (Optional) A unique identifier for the workflow.
+- **Description**: (Required) A unique identifier for the workflow.
 - **Allowed Pattern**: \{\{ automation:EXECUTION_ID \}\}|^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$
 - **Default**: {{ automation:EXECUTION_ID }}
 
