@@ -27,7 +27,7 @@ Executing this runbook, may incur extra charges to your account for the EC2 inst
 git clone https://github.com/aws-samples/backup-outposts-servers-linux-instance.git
 cd backup-outposts-servers-linux-instance
 ```
-3. Build the SSM Automation document with its Attchments with the command:
+3. Build the SSM Automation document with its Attachments with the command:
 ```
 make documents
 ```
