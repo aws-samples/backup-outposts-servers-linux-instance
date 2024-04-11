@@ -2,7 +2,7 @@
 
 ## Description
 
-This automation runbook creates an EBS-backed AMI in region storing the data of the instance store root volume of the Linux instance running on Outposts Server. The automation uses a helper instance in Region to replicate the partitioning and content of the mounted file systems from the instance store root volume to an EBS volume restored from a previous Backup (passing an AMI ID as input parameter). If no AMI ID is specified, the automation searches for any previous backup and it takes the most recent one created with this automation. If no backup is found (e.g. when doing the first backup), the automation uses the base AMI from which the instance was launched.
+This automation runbook creates an EBS-backed AMI in region storing the data of the instance store root volume of the Linux instance running on Outposts Server. The automation uses a helper instance in Region to replicate the partitioning and the data of the mounted FS from the instance store root volume to an EBS volume. By default this EBS volume is restored from the most recent Backup and users can specify the desired backup in the input parameters. If no backup is found with the default option (e.g. when doing the first backup), the EBS volume is created from the AMI from which the outpost server instance was launched.
 
 ## Prerequisites
 
