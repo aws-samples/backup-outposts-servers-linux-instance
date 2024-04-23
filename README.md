@@ -2,11 +2,11 @@
 
 ## Description
 
-This automation runbook creates an EBS-backed AMI in region storing the data of the instance store root volume of the Linux instance running on Outposts Server. The automation uses a helper instance in Region to replicate the partitioning and the data of the mounted FS from the instance store root volume to an EBS volume. By default this EBS volume is restored from the most recent Backup and users can specify the desired backup in the input parameters. If no backup is found with the default option (e.g. when doing the first backup), the EBS volume is created from the AMI from which the outpost server instance was launched.
+This automation runbook creates an EBS-backed AMI in region storing the data of the instance store root volume of the Linux instance running on Outposts Server. The automation uses a helper instance in Region to replicate the partitioning and the data of the mounted File System (FS) from the instance store root volume to an EBS volume. By default this EBS volume is restored from the most recent Backup and users can specify the desired backup in the input parameters. If no backup is found with the default option (e.g. when doing the first backup), the EBS volume is created from the AMI from which the outpost server instance was launched.
 
 ## Prerequisites
 
-- The EC2 instance to backup must be a SSM managed instance running on Outpost Server. The role attached to the instance must also provide the permissions to execute "ssm:GetParameter". You can use a role with the policy "AmazonSSMManagedInstanceCore" attached to provide all the necessary permissions to the EC2 instance running on Outposts Server
+- The EC2 instance to backup must be managed by AWS System Manager (SSM) and running on Outpost Server. The role attached to the instance must also provide the permissions to execute "ssm:GetParameter". You can use a role with the policy "AmazonSSMManagedInstanceCore" attached to provide all the necessary permissions to the EC2 instance running on Outposts Server
 - There must be a Subnet in Region in the same VPC of the Outposts Server Subnet to launch the Helper instance.
 - The outbound rules (SG/nACL/OS Firewall) applied to the instance running on Outposts Server must allow the SSH connectivity towards the private CIDR of the Subnet in Region outlined in the previous point.
 - aws cli, rsync (version >= 3.1.2) and sfdisk (version >= 2.26) installed on the instance running on Outposts Server
@@ -44,16 +44,6 @@ aws ssm create-document --content file://Output/BackupOutpostsServerLinuxInstanc
 1. Open the AWS Console and go to Systems Manager > Documents > “Owned by me” in the region where you deployed the SSM Automation
 1. Select the document name you specified when following the "Installation Instructions" and click on “Execute automation”
 1. Fill-in the input parameters and click on "Execute". Familiarize yourself with the document by reading through the parameters and steps description.
-
-## How to create your own version
-
-To create your own version of this Automation, leveraging the existing SSM Document, Scripts and Framework, you can perform the following steps:
-1. Apply your Customizations inside the "Documents" folder, e.g. modifying the SSM Document, modifying the existing python and bash scripts or adding new scripts
-1. Repeat the "Installation Instructions" using your local repository where you applied the Customizations in the "Documents" folder instead of cloning the repository from github
-
-## Document Type
-
-Automation
 
 ## Parameters
 
@@ -157,6 +147,15 @@ The AutomationAssumeRole or IAM user, requires the following permissions to succ
 - **cloudformation:CreateStack**
 - **cloudformation:DeleteStack**
 
+## How to create your own version
+
+To create your own version of this Automation, leveraging the existing SSM Document, Scripts and Framework, you can perform the following steps:
+1. Apply your Customizations inside the "Documents" folder, e.g. modifying the SSM Document, modifying the existing python and bash scripts or adding new scripts
+1. Repeat the "Installation Instructions" using your local repository where you applied the Customizations in the "Documents" folder instead of cloning the repository from github
+
+## Document Type
+
+Automation
 
 ## Document Version
 
