@@ -99,7 +99,7 @@ aws ssm create-document --content file://Output/BackupOutpostsServerLinuxInstanc
 
 ## Required IAM Permissions to run this runbook
 
-The AutomationAssumeRole or IAM user, requires the following permissions to successfully run this automation. For more information on how to create a role for your SSM Automation and assign the necessary permissions, please visit - https://docs.aws.amazon.com/systems-manager/latest/userguide/automation-setup-iam.html
+The AutomationAssumeRole or IAM user, requires the following permissions to successfully run this automation. For more information on how to create a role for your automation and assign the necessary permissions to it, please visit - https://docs.aws.amazon.com/systems-manager/latest/userguide/automation-setup-iam.html
 
 - **ec2:DescribeImages**
 - **ec2:DescribeSnapshots**
