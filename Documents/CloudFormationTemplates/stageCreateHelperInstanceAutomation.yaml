@@ -54,7 +54,7 @@ Resources:
     IsolatedSecurityGroup:
         Type: AWS::EC2::SecurityGroup
         Properties:
-            GroupDescription: Allow SSH connection from the Outposts Server subnet CIDR
+            GroupDescription: Block the outbound connectivity
             VpcId: !Ref VpcId
             SecurityGroupEgress:
               - CidrIp: 127.0.0.1/32
