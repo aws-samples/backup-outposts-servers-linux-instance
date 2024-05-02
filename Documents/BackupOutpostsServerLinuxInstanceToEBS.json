@@ -610,7 +610,8 @@
                 "Parameters": {
                     "commands": [
                         "%LINUXSCRIPT%"
-                    ]
+                    ],
+                    "executionTimeout": "86400"
                 }
             }
         },
