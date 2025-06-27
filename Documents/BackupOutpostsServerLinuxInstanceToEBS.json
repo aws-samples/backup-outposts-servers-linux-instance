@@ -29,7 +29,7 @@
         },
         "MaxThroughput": {
             "type": "String",
-            "description": "(Optional) the maximum throughput in MiB/s allowed for the data sync.  Leave 0 (default option) if you do not want to set a limitation",
+            "description": "(Optional) the maximum throughput in KiB/s allowed for the data sync.  Leave 0 (default option) if you do not want to set a limitation",
             "default": "0",
             "allowedPattern": "^[0-9]{1,10}$"
         },
