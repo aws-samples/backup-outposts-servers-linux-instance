@@ -59,7 +59,7 @@
             "maxAttempts": 3,
             "isCritical": true,
             "inputs": {
-                "Runtime": "python3.8",
+                "Runtime": "python3.11",
                 "Handler": "checkConcurrency.check_concurrency_handler",
                 "InputPayload": {
                     "InstanceId": "{{ InstanceId }}"
@@ -417,7 +417,7 @@
             "maxAttempts": 1,
             "isCritical": true,
             "inputs": {
-                "Runtime": "python3.8",
+                "Runtime": "python3.11",
                 "Handler": "createBaselineVolume.create_baseline_volume_handler",
                 "InputPayload": {
                     "InstanceId": "{{ InstanceId }}",
@@ -610,8 +610,7 @@
                 "Parameters": {
                     "commands": [
                         "%LINUXSCRIPT%"
-                    ],
-                    "executionTimeout": "86400"
+                    ]
                 }
             }
         },
