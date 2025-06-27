@@ -280,13 +280,19 @@ for source_partuuid in ${SOURCE_PARTITIONS_LIST_PARTUUID}; do
                              else
                                      echo "[INFO] The Source and Target FS size match, nothing to do. Moving to the next step"
                              fi
-                             #rsync the content between the source and the target FS
+
+                             # Set base rsync options
                              RSYNC_OPTIONS=(--stats --delete -avHAxXSPRz)
-                             if [ "${SOURCE_FS}" == "vfat" ]; then
-                                     RSYNC_OPTIONS+=( --filter='-x security.selinux')
-                             fi
+
+                             # Add specific options for vfat filesystem
+                             [[ "${SOURCE_FS}" == "vfat" ]] && RSYNC_OPTIONS+=( --filter='-x security.selinux')
+
+                             # Build bwlimit parameter if needed
+                             BWLIMIT_FLAG=()
+                             [[ ${BWLIMIT_PARAMETER} -gt 0 ]] && BWLIMIT_FLAG=(--bwlimit=${BWLIMIT_PARAMETER})
+
                              echo "[INFO] executing rsync of the content between the source and target FS"
-                             rsync_no_vanished -e "ssh -o StrictHostKeyChecking=no -i "${SCRIPT_PATH}/${HELPER_INSTANCE_PRIVATE_KEY_NAME}"" --rsync-path="sudo rsync" "${EXCLUDES_ARRAY[@]/#/--exclude=}" --exclude="${SCRIPT_PATH}" --bwlimit=${BWLIMIT_PARAMETER} "${RSYNC_OPTIONS[@]}" "${SOURCE_FS_MOUNTPOINT}/" ${SSH_USER}@${HELPER_INSTANCE_PRIVATE_IP}:${BASE_MOUNT} || error_trap "Failed to rsync the content between the Source and target FS"
+                             rsync_no_vanished -e "ssh -o StrictHostKeyChecking=no -i "${SCRIPT_PATH}/${HELPER_INSTANCE_PRIVATE_KEY_NAME}"" --rsync-path="sudo rsync" "${EXCLUDES_ARRAY[@]/#/--exclude=}" --exclude="${SCRIPT_PATH}" "${BWLIMIT_FLAG[@]}" "${RSYNC_OPTIONS[@]}" "${SOURCE_FS_MOUNTPOINT}/" ${SSH_USER}@${HELPER_INSTANCE_PRIVATE_IP}:${BASE_MOUNT} || error_trap "Failed to rsync the content between the Source and target FS"
 
                              echo "[INFO] rsync completed!"
 
